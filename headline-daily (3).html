@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Headline Daily</title>
+<meta property="og:title" content="Headline Daily">
+<meta property="og:description" content="A daily news guessing game: guess the year, spot the fake, find the country.">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{--bg:#f6f1e7;--card:#fffdf8;--ink:#1d1b17;--mute:#6b665b;--line:#d9d1bf;--acc:#b3261e;--ok:#2e7d32;--bad:#b3261e;--org:#c76b00;--rule:rgba(29,27,23,.07);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15130f;--card:#1f1c17;--ink:#f1ebdd;--mute:#a69f8e;--line:#3a352b;--acc:#ff6b5e;--ok:#6fcf74;--bad:#ff6b5e;--org:#ffa04d;--rule:rgba(241,235,221,.06)}}
+:root[data-theme="dark"]{--bg:#15130f;--card:#1f1c17;--ink:#f1ebdd;--mute:#a69f8e;--line:#3a352b;--acc:#ff6b5e;--ok:#6fcf74;--bad:#ff6b5e;--org:#ffa04d;--rule:rgba(241,235,221,.06)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;min-height:100vh;background-image:repeating-linear-gradient(90deg,transparent 0,transparent 239px,var(--rule) 239px,var(--rule) 240px),radial-gradient(var(--rule) 1px,transparent 1.2px);background-size:auto,6px 6px;background-attachment:fixed}
+main{max-width:560px;margin:0 auto;padding:20px 16px 40px}
+header{position:relative;text-align:center;border-bottom:3px double var(--ink);padding-bottom:10px;margin-bottom:12px}
+h1{margin:0;font-size:2rem;letter-spacing:.02em}
+.sub{color:var(--mute);font:.8rem system-ui,sans-serif;margin-top:4px}
+.edition{font:.68rem system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);padding-bottom:6px;margin:0 56px 8px;border-bottom:1px solid var(--ink)}
+.hbtn{position:absolute;top:0;width:44px;height:44px;padding:0;font-size:1.2rem;border-radius:50%}.hbtn.l{left:0}.hbtn.r{right:0}
+.wire{display:flex;align-items:center;gap:8px;margin:0 0 14px;font:.7rem system-ui,sans-serif;letter-spacing:.05em;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:5px 0;overflow:hidden}
+.wl{background:var(--acc);color:var(--bg);font-weight:700;padding:1px 6px;border-radius:3px;flex:none}
+.wt{overflow:hidden;flex:1}
+.wm{display:inline-block;white-space:nowrap;color:var(--mute);animation:wire 70s linear infinite}
+@keyframes wire{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.wm{animation:none}.rb-fill,.rb-pin{transition:none}}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}.tabs button{flex:1 1 30%;padding:10px 6px;font-size:.85rem}
+button{font:600 .95rem system-ui,sans-serif;padding:12px;border-radius:8px;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button.on,button.primary{background:var(--ink);color:var(--bg)}
+button:disabled{opacity:.5;cursor:default}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px}
+.meta{display:flex;justify-content:space-between;font:.8rem system-ui,sans-serif;color:var(--mute);margin-bottom:12px}
+.hl{font-size:1.5rem;line-height:1.3;font-weight:700;margin:8px 0 20px}
+.hint{color:var(--mute);font:.85rem system-ui,sans-serif;margin:0 0 6px}
+.row{display:flex;gap:10px}.row button{flex:1}
+.row input{flex:3;min-width:0;padding:12px;border:1.5px solid var(--ink);border-radius:8px;background:var(--card);color:var(--ink);font:1rem system-ui,sans-serif}
+.opt{display:block;width:100%;margin-top:8px;text-align:left}
+input[type=range]{width:100%;accent-color:var(--acc)}
+.year{font:700 2.4rem system-ui,sans-serif;text-align:center;margin:6px 0}
+.res{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font:.95rem/1.5 system-ui,sans-serif}
+.good{color:var(--ok);font-weight:700}.bad{color:var(--bad);font-weight:700}
+.big{font:700 3rem system-ui,sans-serif;text-align:center}
+.emo{font-size:1.6rem;text-align:center;letter-spacing:.2em;margin:8px 0 16px}
+.center{text-align:center;font-family:system-ui,sans-serif}
+.foot{margin-top:14px;text-align:center;color:var(--mute);font:.75rem system-ui,sans-serif}
+.src{margin-top:10px;font-size:.85rem}.src a{color:var(--acc)}
+.gr{padding:8px 10px;margin:4px 0;border-radius:6px;border-left:6px solid;background:var(--card);font:.95rem system-ui,sans-serif}
+.gr.g{border-color:var(--ok)}.gr.o{border-color:var(--org)}.gr.r{border-color:var(--bad)}
+.statrow{display:flex;justify-content:space-around;text-align:center;margin:8px 0 18px;font-family:system-ui,sans-serif}
+.statrow b{display:block;font-size:2rem}.statrow span{font-size:.7rem;color:var(--mute)}
+table{width:100%;border-collapse:collapse;font:.9rem system-ui,sans-serif;margin-bottom:16px}
+th,td{padding:6px;border-bottom:1px solid var(--line);text-align:left}
+.bar{display:flex;align-items:center;gap:8px;font:.8rem system-ui,sans-serif;margin:5px 0}
+.bar i{display:block;height:18px;background:var(--acc);border-radius:3px;min-width:3px}
+.bar em{width:60px;font-style:normal;color:var(--mute)}
+.h3{font:700 .8rem system-ui,sans-serif;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px}
+.txt{font:.95rem/1.6 system-ui,sans-serif}.txt p{margin:0 0 10px}
+.rankbar{margin:0 0 14px;font-family:system-ui,sans-serif}
+.rb-top{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:10px;color:var(--mute)}.rb-top b{color:var(--ink)}
+.rb-track{position:relative;height:12px;border:1.5px solid var(--ink);border-radius:8px;background:var(--card)}
+.rb-fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--acc);transition:width .7s cubic-bezier(.3,1.3,.5,1)}
+.rb-tick{position:absolute;top:0;bottom:0;width:1.5px;background:var(--ink);opacity:.35}
+.rb-pin{position:absolute;top:-12px;transform:translateX(-50%);font-size:1.3rem;transition:left .7s cubic-bezier(.3,1.3,.5,1)}
+</style>
+</head>
+<body>
+<main>
+<header>
+<button class="hbtn l" onclick="menu()" aria-label="Menu">&#9776;</button>
+<button class="hbtn r" onclick="showStats()" aria-label="Stats">&#128200;</button>
+<div class="edition" id="edition"></div>
+<h1>Headline Daily</h1>
+<div class="sub" id="date"></div>
+</header>
+<div class="wire" aria-hidden="true"><span class="wl">WIRE</span><div class="wt"><div class="wm" id="wm"></div></div></div>
+<div class="tabs">
+<button id="t-date" onclick="start('date')">&#128197; Guess the Year</button>
+<button id="t-fake" onclick="start('fake')">&#128373; Real or Fake?</button>
+<button id="t-where" onclick="start('where')">&#127757; Guess the Country</button>
+<button id="t-inf" onclick="startInf()">&#9854; Unlimited</button>
+<button id="t-rand" onclick="startRandom()">&#127922; Random Wikipedia</button>
+</div>
+<div id="rankbar" class="rankbar" hidden></div>
+<div id="app"></div>
+<div class="foot" id="streak"></div>
+<div class="foot">Every puzzle uses a Wikipedia article name. Facts from Wikipedia (CC BY-SA). Not affiliated with Wikipedia.</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,"0");
+const ds=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const now=new Date(),TODAY=ds(now);let DAY=TODAY;
+const LAUNCH=Date.UTC(2026,10,1);
+const edNo=k=>{const p=k.split("-").map(Number);return Math.max(1,Math.floor((Date.UTC(p[0],p[1]-1,p[2])-LAUNCH)/864e5)+1)};
+const nm=t=>t.replace(/_/g," ");
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function load(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function pick(arr,seed,n){const r=rng(seed),a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)}
+const seed=m=>Number(DAY.replace(/-/g,""))+({fake:7,where:13}[m]||0);
+const rnd=()=>Math.floor(Math.random()*1e9);
+
+/* Year: [year, Wikipedia article]. Titles never contain a year. */
+const YR=[[1969,"Apollo_11"],[1912,"RMS_Titanic"],[1989,"Fall_of_the_Berlin_Wall"],[1941,"Attack_on_Pearl_Harbor"],[1997,"Death_of_Diana,_Princess_of_Wales"],[2001,"September_11_attacks"],[1991,"Dissolution_of_the_Soviet_Union"],[2007,"IPhone_(1st_generation)"],[1963,"Assassination_of_John_F._Kennedy"],[1937,"Hindenburg_disaster"],[1986,"Chernobyl_disaster"],[1957,"Sputnik_1"],[2005,"Hurricane_Katrina"],[1975,"Fall_of_Saigon"],[1920,"Nineteenth_Amendment_to_the_United_States_Constitution"],[1986,"Space_Shuttle_Challenger_disaster"],[1944,"Normandy_landings"],[1945,"Atomic_bombings_of_Hiroshima_and_Nagasaki"],[2011,"Killing_of_Osama_bin_Laden"],[1919,"Great_Molasses_Flood"],[1932,"Emu_War"],[1969,"Woodstock"],[1908,"Tunguska_event"],[1917,"Halifax_Explosion"],[1962,"Cuban_Missile_Crisis"],[1970,"Apollo_13"],[1979,"Three_Mile_Island_accident"],[2003,"Space_Shuttle_Columbia_disaster"],[2011,"Fukushima_nuclear_accident"]];
+/* Real or Fake: [name, isReal, article]. Fake names are invented. */
+const RF=[["Emu War",1,"Emu_War"],["Great Molasses Flood",1,"Great_Molasses_Flood"],["Dancing plague of 1518",1,"Dancing_plague_of_1518"],["London Beer Flood",1,"London_Beer_Flood"],["Vasily Arkhipov",1,"Vasily_Arkhipov"],["Roy Sullivan",1,"Roy_Sullivan"],["Right to Internet access",1,"Right_to_Internet_access"],["Berry (botany)",1,"Berry_(botany)"],["Great Stink",1,"Great_Stink"],["War of the Bucket",1,"War_of_the_Bucket"],["Piltdown Man",1,"Piltdown_Man"],["Cadaver Synod",1,"Cadaver_Synod"],["Tulip mania",1,"Tulip_mania"],
+["Swiss Cheese Amendment",0],["Paris Pigeon Ban",0],["Moose Currency Referendum",0],["Norwegian Underwater Library",0],["Federal Nap Act",0],["Dolphin Turnstile Experiment",0],["Gondola Selfie Prohibition",0],["Banana Moonglow Study",0],["Mountain Echo Ban",0],["Feline Counting Study",0],["Umbrella Prohibition Act",0],["Kangaroo Crossing Tolls",0]];
+/* Country: [article name, country, article] */
+const CT=[["Hindenburg disaster","United States","Hindenburg_disaster"],["Great Molasses Flood","United States","Great_Molasses_Flood"],["Emu War","Australia","Emu_War"],["Sputnik 1","Kazakhstan","Sputnik_1"],["Chernobyl disaster","Ukraine","Chernobyl_disaster"],["Dolly (sheep)","United Kingdom","Dolly_(sheep)"],["Space Shuttle Challenger disaster","United States","Space_Shuttle_Challenger_disaster"],["Dancing plague of 1518","France","Dancing_plague_of_1518"],["Woodstock","United States","Woodstock"],["Nelson Mandela","South Africa","Nelson_Mandela"],["Fall of Saigon","Vietnam","Fall_of_Saigon"],["Normandy landings","France","Normandy_landings"],["Great Stink","United Kingdom","Great_Stink"],["War of the Bucket","Italy","War_of_the_Bucket"],["Piltdown Man","United Kingdom","Piltdown_Man"],["Cadaver Synod","Italy","Cadaver_Synod"],["Tulip mania","Netherlands","Tulip_mania"],["Killing of Osama bin Laden","Pakistan","Killing_of_Osama_bin_Laden"],["1953 British Mount Everest expedition","Nepal","1953_British_Mount_Everest_expedition"],["1989 Tiananmen Square protests and massacre","China","1989_Tiananmen_Square_protests_and_massacre"],["London Beer Flood","United Kingdom","London_Beer_Flood"]];
+const CONT={"Europe":"Albania,Andorra,Austria,Belarus,Belgium,Bosnia and Herzegovina,Bulgaria,Croatia,Cyprus,Czechia,Denmark,Estonia,Finland,France,Germany,Greece,Hungary,Iceland,Ireland,Italy,Latvia,Liechtenstein,Lithuania,Luxembourg,Malta,Moldova,Monaco,Montenegro,Netherlands,North Macedonia,Norway,Poland,Portugal,Romania,Russia,San Marino,Serbia,Slovakia,Slovenia,Spain,Sweden,Switzerland,Ukraine,United Kingdom,Vatican City",
+"Asia":"Afghanistan,Armenia,Azerbaijan,Bahrain,Bangladesh,Bhutan,Brunei,Cambodia,China,Georgia,India,Indonesia,Iran,Iraq,Israel,Japan,Jordan,Kazakhstan,Kuwait,Kyrgyzstan,Laos,Lebanon,Malaysia,Maldives,Mongolia,Myanmar,Nepal,North Korea,Oman,Pakistan,Philippines,Qatar,Saudi Arabia,Singapore,South Korea,Sri Lanka,Syria,Taiwan,Tajikistan,Thailand,Timor-Leste,Turkey,Turkmenistan,United Arab Emirates,Uzbekistan,Vietnam,Yemen",
+"Africa":"Algeria,Angola,Benin,Botswana,Burkina Faso,Burundi,Cameroon,Cape Verde,Central African Republic,Chad,Comoros,Congo,DR Congo,Djibouti,Egypt,Equatorial Guinea,Eritrea,Eswatini,Ethiopia,Gabon,Gambia,Ghana,Guinea,Guinea-Bissau,Ivory Coast,Kenya,Lesotho,Liberia,Libya,Madagascar,Malawi,Mali,Mauritania,Mauritius,Morocco,Mozambique,Namibia,Niger,Nigeria,Rwanda,Senegal,Seychelles,Sierra Leone,Somalia,South Africa,South Sudan,Sudan,Tanzania,Togo,Tunisia,Uganda,Zambia,Zimbabwe",
+"North America":"Antigua and Barbuda,Bahamas,Barbados,Belize,Canada,Costa Rica,Cuba,Dominica,Dominican Republic,El Salvador,Grenada,Guatemala,Haiti,Honduras,Jamaica,Mexico,Nicaragua,Panama,Saint Kitts and Nevis,Saint Lucia,Saint Vincent and the Grenadines,Trinidad and Tobago,United States",
+"South America":"Argentina,Bolivia,Brazil,Chile,Colombia,Ecuador,Guyana,Paraguay,Peru,Suriname,Uruguay,Venezuela",
+"Oceania":"Australia,Fiji,Kiribati,Marshall Islands,Micronesia,Nauru,New Zealand,Palau,Papua New Guinea,Samoa,Solomon Islands,Tonga,Tuvalu,Vanuatu"};
+const CMAP={};Object.keys(CONT).forEach(c=>CONT[c].split(",").forEach(n=>{CMAP[n]=c}));
+const RANKS=["Intern","Stringer","Staff Reporter","Correspondent","Section Editor","Managing Editor","Editor-in-Chief"];
+const rankName=p=>RANKS[Math.min(6,Math.floor(p*7/100))];
+const MAXS={date:700,fake:105,where:100};
+const TITLES={date:"Guess the Year",fake:"Real or Fake",where:"Guess the Country"};
+const G="\ud83d\udfe9",Y="\ud83d\udfe8",O="\ud83d\udfe7",R="\ud83d\udfe5";
+
+function srcLink(w){return w?'<div class="src"><a href="https://en.wikipedia.org/wiki/'+encodeURIComponent(w).replace(/%28/g,"(").replace(/%29/g,")").replace(/%2C/g,",")+'" target="_blank" rel="noopener">Read the article on Wikipedia &rarr;</a></div>':""}
+function setTab(k){["date","fake","where","inf","rand"].forEach(x=>$("t-"+x).classList.toggle("on",x===k));$("rankbar").hidden=true}
+function setDay(k){DAY=k;const p=k.split("-").map(Number);
+  $("edition").textContent="Vol. I \u00b7 No. "+edNo(k)+" \u00b7 Late City Edition";
+  $("date").textContent=new Date(p[0],p[1]-1,p[2]).toLocaleDateString(undefined,{weekday:"long",year:"numeric",month:"long",day:"numeric"})+(k===TODAY?" \u00b7 new puzzles daily":" \u00b7 from the archive")}
+
+/* ---------- Daily games ---------- */
+let S=null;
+function start(mode){
+  setTab(mode);
+  const done=load("hd2_"+mode+"_"+DAY),n=mode==="where"?1:7;
+  S={mode,items:pick({date:YR,fake:RF,where:CT}[mode],seed(mode),n),i:0,score:0,prev:0,marks:[],rank:14,n,g:[]};
+  if(done){S.i=n;S.score=done.score;S.marks=done.marks;S.rank=done.rank==null?14:done.rank;S.replay=true}
+  render();showRank();
+}
+function render(){
+  if(S.i>=S.n)return finish();
+  const it=S.items[S.i],m=S.mode;
+  const head='<div class="meta"><span>'+(m==="where"?"Today\u2019s story":"Round "+(S.i+1)+" of "+S.n)+'</span><span>Score <b id="sc">'+S.score+'</b></span></div>';
+  let body;
+  if(m==="date")body='<div class="hint">In what year did this happen?</div><div class="hl">'+esc(nm(it[1]))+'</div><div class="year" id="yv">1960</div><input type="range" id="yr" min="1900" max="2026" value="1960" oninput="$(\'yv\').textContent=this.value"><div style="height:14px"></div><button class="primary" style="width:100%" id="lock" onclick="lockDate()">Lock in</button>';
+  else if(m==="fake")body='<div class="hint">Is there a real Wikipedia article with this name?</div><div class="hl">'+esc(it[0])+'</div><div class="row"><button onclick="answer(true)">\u2705 Yes, real</button><button onclick="answer(false)">\u274c No, not real</button></div>';
+  else body='<div class="hint">Which country is this article about? You have 7 tries.</div><div class="hl">'+esc(it[0])+'</div><div id="gl"></div><div id="hints"></div><div class="row" style="margin-top:12px"><input id="gi" list="cl" placeholder="Type a country\u2026" autocomplete="off"><button class="primary" onclick="guess()">Guess</button></div><datalist id="cl">'+Object.keys(CMAP).sort().map(c=>'<option value="'+c+'">').join("")+'</datalist>';
+  $("app").innerHTML='<div class="card">'+head+body+'<div id="out"></div></div>';
+}
+function res(good,lead,rest,w){return '<div class="res"><span class="'+(good?"good":"bad")+'">'+lead+'</span> '+rest+srcLink(w)+'<br><br><button class="primary" style="width:100%" onclick="next()">'+(S.i>=S.n-1?"See results":"Next")+'</button></div>'}
+function lockDate(){
+  const g=+$("yr").value,it=S.items[S.i],d=Math.abs(g-it[0]),pts=Math.round(100*Math.exp(-d/12));
+  S.prev=S.score;S.score+=pts;S.marks.push(d===0?G:d<=5?Y:d<=15?O:R);
+  $("lock").disabled=true;$("yr").disabled=true;award(pts,100,35);
+  $("out").innerHTML=res(pts>=40,d===0?"Exactly right!":d+" year"+(d>1?"s":"")+" off.","It was <b>"+it[0]+"</b>. +"+pts+" pts",it[1]);
+}
+function answer(g){
+  const it=S.items[S.i],ok=g===!!it[1],pts=ok?15:0;
+  S.prev=S.score;S.score+=pts;S.marks.push(ok?G:R);
+  document.querySelectorAll(".row button").forEach(b=>{b.disabled=true});award(pts,15,35);
+  $("out").innerHTML=res(ok,ok?"Correct! +15":"Not quite.",it[1]?"That is a real Wikipedia article.":"We invented that name. There is no such article.",it[1]?it[2]:null);
+}
+function guess(){
+  const it=S.items[0],v=$("gi").value.trim().toLowerCase();
+  const name=Object.keys(CMAP).find(c=>c.toLowerCase()===v);
+  if(!name){$("gi").style.borderColor="var(--bad)";return}
+  if(S.g.some(x=>x.n===name))return;
+  const ok=name===it[1],col=ok?G:CMAP[name]===CMAP[it[1]]?O:R;
+  S.g.push({n:name,c:col});S.marks.push(col);$("gi").value="";$("gi").style.borderColor="";
+  const t=S.g.length;
+  $("gl").innerHTML=S.g.map(x=>'<div class="gr '+(x.c===G?"g":x.c===O?"o":"r")+'">'+x.c+" "+esc(x.n)+"</div>").join("")+'<div class="hint" style="margin:6px 0">Tries: '+t+" / 7</div>";
+  const h=[];if(t>=2)h.push("Continent: "+CMAP[it[1]]);if(t>=4)h.push("Starts with: "+it[1][0]);if(t>=6)h.push("Letters: "+it[1].replace(/ /g,"").length);
+  $("hints").innerHTML=h.map(x=>'<div class="hint" style="margin:2px 0;color:var(--ink)">\ud83d\udca1 '+x+"</div>").join("");
+  if(ok||t>=7){
+    const pts=ok?[100,85,70,55,40,25,10][t-1]:0;
+    S.prev=0;S.score=pts;document.querySelectorAll(".row button,#gi").forEach(b=>{b.disabled=true});award(pts,100,100);
+    $("out").innerHTML=res(ok,ok?"Correct in "+t+(t===1?" try!":" tries!"):"Out of tries.","It was <b>"+it[1]+"</b>. +"+pts+" pts",it[2]);
+  }
+}
+function next(){S.i++;render()}
+function award(pts,max,k){
+  const d=Math.round((pts/max-.4)*k);S.rank=Math.max(0,Math.min(100,S.rank+d));showRank();
+  const el=$("sc");if(!el)return;
+  const to=S.score,from=S.prev;
+  if(from===to||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)){el.textContent=to;return}
+  const t0=performance.now();
+  (function tick(t){const f=Math.min(1,(t-t0)/700);el.textContent=Math.round(from+(to-from)*f);if(f<1)requestAnimationFrame(tick)})(t0);
+}
+function showRank(){
+  const b=$("rankbar");b.hidden=false;
+  if(!$("rbf"))b.innerHTML='<div class="rb-top"><span>Newsroom rank: <b id="rbn"></b></span></div><div class="rb-track"><div class="rb-fill" id="rbf"></div>'+[14.29,28.57,42.86,57.14,71.43,85.71].map(x=>'<div class="rb-tick" style="left:'+x+'%"></div>').join("")+'<div class="rb-pin" id="rbp">\ud83d\udcf0</div></div>';
+  $("rbf").style.width=S.rank+"%";$("rbp").style.left=S.rank+"%";$("rbn").textContent=rankName(S.rank);
+}
+function bumpStreak(){
+  const s=load("hd2_streak")||{last:"",n:0,max:0};
+  if(s.last===TODAY)return;
+  const y=new Date(now.getFullYear(),now.getMonth(),now.getDate()-1);
+  s.n=s.last===ds(y)?s.n+1:1;s.last=TODAY;s.max=Math.max(s.max||0,s.n);save("hd2_streak",s);
+}
+function finish(){
+  const max=MAXS[S.mode],title=TITLES[S.mode];
+  if(!S.replay){
+    save("hd2_"+S.mode+"_"+DAY,{score:S.score,marks:S.marks,rank:S.rank});
+    if(DAY===TODAY)bumpStreak();
+    const h=load("hd2_hist")||[];h.push({d:DAY,m:S.mode,s:S.score,x:max});save("hd2_hist",h);
+  }
+  const txt="Headline Daily No. "+edNo(DAY)+" \u00b7 "+title+"\n"+S.marks.join("")+"  "+S.score+"/"+max+" \u00b7 "+rankName(S.rank);
+  const nx={date:"fake",fake:"where",where:"date"}[S.mode];
+  $("app").innerHTML='<div class="card center"><div class="sub">No. '+edNo(DAY)+" \u00b7 "+title+(S.replay?" \u00b7 already played":"")+'</div><div class="big">'+S.score+'<span style="font-size:1.2rem;color:var(--mute)"> / '+max+'</span></div><div class="emo">'+S.marks.join("")+'</div><div style="font:italic 1.2rem Georgia,serif;margin:-6px 0 14px">You finished as <b>'+rankName(S.rank)+'</b></div><button class="primary" style="width:100%" id="sh">Copy result</button><div style="height:10px"></div><button style="width:100%" onclick="start(\''+nx+'\')">Play '+TITLES[nx]+'</button><div style="height:10px"></div><button style="width:100%" onclick="showStats()">\ud83d\udcc8 View stats</button></div>';
+  $("sh").onclick=()=>{try{navigator.clipboard.writeText(txt);$("sh").textContent="Copied!"}catch(e){$("sh").textContent="Copy failed"}};
+  showRank();
+  const s=load("hd2_streak");$("streak").textContent=s?"\ud83d\udd25 Daily streak: "+s.n:"";
+}
+
+/* ---------- Menu, how to play, archive, stats, legal ---------- */
+function menu(){setTab("");$("app").innerHTML='<div class="card"><div class="hl" style="font-size:1.2rem;margin-bottom:8px">Menu</div>'+[["How to play","howTo()"],["Archive","archive()"],["Stats","showStats()"],["About &amp; sources","about()"],["Legal &amp; privacy","legal()"],["Reset my progress","resetAsk()"]].map(x=>'<button class="opt" onclick="'+x[1]+'">'+x[0]+"</button>").join("")+"</div>"}
+function page(t,h){setTab("");$("app").innerHTML='<div class="card txt"><div class="hl" style="font-size:1.2rem;margin-bottom:10px">'+t+"</div>"+h+'<button class="opt" onclick="menu()">&larr; Back to menu</button></div>'}
+function howTo(){page("How to play","<p>Every puzzle uses the name of a Wikipedia article. A new set appears each day, the same for everyone.</p><p><b>Guess the Year:</b> 7 rounds. Slide to the year it happened. Closer guesses earn more, up to 100 points a round.</p><p><b>Real or Fake:</b> 7 rounds. Tap Yes if a real Wikipedia article has that name, No if we made it up. 15 points each.</p><p><b>Guess the Country:</b> one article, 7 tries. Type a country. Green is right, orange is the right continent, red is the wrong continent. Hints appear as you go, and fewer tries earn more points.</p><p><b>Newsroom rank:</b> play well to rise from Intern to Editor-in-Chief.</p><p><b>Unlimited</b> is free practice with no daily limit. <b>Random Wikipedia</b> lets you browse articles.</p>")}
+function about(){page("About &amp; sources","<p>Headline Daily is an independent game. Each puzzle is built from the title of a Wikipedia article, and every answer links to that article so you can check it.</p><p>Facts come from Wikipedia, whose text is available under CC BY-SA 4.0. Article names are shown as Wikipedia titles, and the made-up names in Real or Fake are labeled as invented after you answer.</p><p>We are not affiliated with Wikipedia or the Wikimedia Foundation.</p><p><b>Corrections:</b> if you find a mistake, please tell us. (Contact details will be added before launch.)</p>")}
+function legal(){page("Legal &amp; privacy","<p><b>Privacy:</b> no accounts, no ads and no tracking. Your scores, streak and stats are saved only in your own browser and are never sent to us. The Random Wikipedia tab asks Wikipedia for an article when the game is hosted on its own site.</p><p><b>Terms:</b> the game is provided for entertainment, as is. We try to keep every answer accurate but cannot guarantee it. Wikipedia content is used under CC BY-SA 4.0. Wikipedia names and logos belong to their owners.</p>")}
+function resetAsk(){page("Reset my progress",'<p>This clears your streak, stats and today\u2019s results on this device so you can replay the daily games.</p><button class="opt primary" onclick="resetAll()">Yes, reset everything</button>')}
+function resetAll(){try{Object.keys(localStorage).filter(k=>k.indexOf("hd")===0).forEach(k=>localStorage.removeItem(k))}catch(e){}$("streak").textContent="";start("date")}
+function archive(){
+  let h="";
+  for(let i=0;i<10;i++){const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i);if(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())<LAUNCH)break;const k=ds(d);
+    h+='<button class="opt" onclick="setDay(\''+k+'\');start(\'date\')">No. '+edNo(k)+" \u00b7 "+d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"})+(i?"":" (today)")+"</button>"}
+  page("Archive",'<p class="hint">Replay a past edition. Archive plays do not count toward your streak.</p>'+(h||"<p>No earlier editions yet.</p>"));
+}
+function showStats(){
+  setTab("");
+  const h=load("hd2_hist")||[],s=load("hd2_streak")||{n:0,max:0,last:""};
+  const y=new Date(now.getFullYear(),now.getMonth(),now.getDate()-1);
+  const live=(s.last===TODAY||s.last===ds(y))?s.n:0;
+  const tr=Object.keys(TITLES).map(k=>(load("hd2_"+k+"_"+TODAY)?"\u2705":"\u2b1c")+" "+TITLES[k]).join("<br>");
+  const per=Object.keys(TITLES).map(k=>{const r=h.filter(x=>x.m===k);const a=r.length?Math.round(r.reduce((t,x)=>t+x.s/x.x*100,0)/r.length):null;return "<tr><td>"+TITLES[k]+"</td><td>"+r.length+"</td><td>"+(a===null?"-":a+"%")+"</td></tr>"}).join("");
+  const b=[0,0,0,0,0];h.forEach(x=>{b[Math.min(4,Math.floor(x.s/x.x*100/20.0001))]++});
+  const m=Math.max(1,...b),lab=["0-20%","21-40%","41-60%","61-80%","81-100%"];
+  $("app").innerHTML='<div class="card"><div class="statrow"><div><b>'+live+'</b><span>Current streak</span></div><div><b>'+Math.max(s.max||0,live)+'</b><span>Best streak</span></div><div><b>'+h.length+'</b><span>Games played</span></div></div><div class="h3">Today</div><div style="font:.9rem/1.7 system-ui,sans-serif">'+tr+'</div><div class="h3">Average score</div><table><tr><th>Mode</th><th>Played</th><th>Avg</th></tr>'+per+'</table><div class="h3">Score distribution (% of max)</div>'+(h.length?b.map((n,i)=>'<div class="bar"><em>'+lab[i]+'</em><i style="width:'+Math.round(n/m*100)+'%"></i><span>'+n+"</span></div>").join(""):'<div class="sub">Play a game to see your distribution.</div>')+"</div>";
+}
+
+/* ---------- Unlimited (free practice) ---------- */
+let U=null;
+function startInf(){setTab("inf");$("app").innerHTML='<div class="card center"><div class="big">\u221e</div><div class="hl" style="font-size:1.3rem">Unlimited mode</div><p style="color:var(--mute);line-height:1.5">No daily limit and no rank. Play as long as you like and chase your best streak.</p><button class="opt primary" onclick="infGo(\'mix\')">Mixed</button><button class="opt" onclick="infGo(\'date\')">Guess the Year</button><button class="opt" onclick="infGo(\'fake\')">Real or Fake</button><button class="opt" onclick="infGo(\'where\')">Guess the Country</button></div>'}
+function infGo(k){U={score:0,n:0,streak:0,best:0,pref:k,q:{}};infRound()}
+function ud(k){const p={date:YR,fake:RF,where:CT}[k];if(!U.q[k]||!U.q[k].length)U.q[k]=pick(p,rnd(),p.length);return U.q[k].pop()}
+function infRound(){
+  const k=U.pref==="mix"?["date","fake","where"][Math.floor(Math.random()*3)]:U.pref,it=ud(k);U.k=k;U.it=it;
+  const head='<div class="meta"><span>Round '+(U.n+1)+' \u00b7 \u221e</span><span>Score '+U.score+' \u00b7 Streak '+U.streak+"</span></div>";
+  let body;
+  if(k==="date")body='<div class="hint">In what year did this happen?</div><div class="hl">'+esc(nm(it[1]))+'</div><div class="year" id="yv">1960</div><input type="range" id="yr" min="1900" max="2026" value="1960" oninput="$(\'yv\').textContent=this.value"><div style="height:14px"></div><button class="primary" style="width:100%" id="lock" onclick="infLock()">Lock in</button>';
+  else if(k==="fake")body='<div class="hint">Is there a real Wikipedia article with this name?</div><div class="hl">'+esc(it[0])+'</div><div class="row"><button onclick="infAns(true)">\u2705 Yes, real</button><button onclick="infAns(false)">\u274c No, not real</button></div>';
+  else{U.opts=pick([it[1]].concat(pick(Object.keys(CMAP).filter(c=>c!==it[1]),rnd(),3)),rnd(),4);body='<div class="hint">Which country is this article about?</div><div class="hl">'+esc(it[0])+"</div>"+U.opts.map((o,i)=>'<button class="opt" onclick="infWhere('+i+')">'+o+"</button>").join("")}
+  $("app").innerHTML='<div class="card">'+head+body+'<div id="out"></div><button style="margin-top:12px;width:100%" onclick="infEnd()">End run</button></div>';
+}
+function infDone(good,pts,lead,rest,w){U.score+=pts;U.streak=good?U.streak+1:0;U.best=Math.max(U.best,U.streak);$("out").innerHTML='<div class="res"><span class="'+(good?"good":"bad")+'">'+lead+"</span> "+rest+srcLink(w)+'<br><br><button class="primary" style="width:100%" onclick="infNext()">Next</button></div>'}
+function infLock(){const g=+$("yr").value,y=U.it[0],d=Math.abs(g-y),p=Math.round(100*Math.exp(-d/12));$("lock").disabled=true;$("yr").disabled=true;infDone(p>=40,p,d===0?"Exactly right!":d+" year"+(d>1?"s":"")+" off.","It was <b>"+y+"</b>. +"+p+" pts",U.it[1])}
+function infAns(g){const ok=g===!!U.it[1];document.querySelectorAll(".row button").forEach(b=>{b.disabled=true});infDone(ok,ok?15:0,ok?"Correct! +15":"Not quite.",U.it[1]?"That is a real Wikipedia article.":"We invented that name.",U.it[1]?U.it[2]:null)}
+function infWhere(i){const ok=U.opts[i]===U.it[1];document.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(U.opts[j]===U.it[1]){b.style.borderColor="var(--ok)";b.style.opacity=1}else if(j===i){b.style.borderColor="var(--bad)";b.style.opacity=1}});infDone(ok,ok?25:0,ok?"Correct! +25":"Not quite.","It was <b>"+U.it[1]+"</b>.",U.it[2])}
+function infNext(){U.n++;infRound()}
+function infEnd(){
+  const txt="Headline Daily \u00b7 Unlimited run\n"+U.n+" rounds \u00b7 "+U.score+" pts \u00b7 best streak "+U.best;
+  $("app").innerHTML='<div class="card center"><div class="sub">Unlimited run over</div><div class="big">'+U.score+'</div><p style="line-height:1.6">'+U.n+" rounds completed<br>Best streak: "+U.best+'</p><button class="primary" style="width:100%" id="sh">Copy result</button><div style="height:10px"></div><button style="width:100%" onclick="startInf()">New run</button></div>';
+  $("sh").onclick=()=>{try{navigator.clipboard.writeText(txt);$("sh").textContent="Copied!"}catch(e){$("sh").textContent="Copy failed"}};
+}
+
+/* ---------- Random Wikipedia (article names only) ---------- */
+let E={h:[],i:-1,pool:[]};
+function startRandom(){
+  setTab("rand");const seen={};E.pool=[];
+  YR.map(x=>x[1]).concat(CT.map(x=>x[2]),RF.filter(x=>x[1]).map(x=>x[2])).forEach(w=>{if(!seen[w]){seen[w]=1;E.pool.push({t:nm(w),w})}});
+  E.h=[];E.i=-1;rndNext();
+}
+function rndPrev(){if(E.i>0){E.i--;rndShow()}}
+async function rndNext(){
+  if(E.i<E.h.length-1){E.i++;return rndShow()}
+  $("app").innerHTML='<div class="card center">Finding an article\u2026</div>';
+  let item=null;
+  try{
+    const c=new AbortController(),t=setTimeout(()=>c.abort(),4000);
+    const r=await fetch("https://en.wikipedia.org/api/rest_v1/page/random/summary",{signal:c.signal});clearTimeout(t);
+    if(r.ok){const j=await r.json();let u=j.content_urls&&j.content_urls.desktop&&j.content_urls.desktop.page;
+      if(!u||u.indexOf("https://en.wikipedia.org/")!==0)u="https://en.wikipedia.org/wiki/"+encodeURIComponent(String(j.title).replace(/ /g,"_"));
+      if(j.title)item={t:j.title,url:u,live:true}}
+  }catch(e){}
+  if(!item&&E.pool.length)item=E.pool[Math.floor(Math.random()*E.pool.length)];
+  if(!item)return;
+  E.h.push(item);E.i=E.h.length-1;rndShow();
+}
+function rndShow(){
+  const it=E.h[E.i],u=it.url||("https://en.wikipedia.org/wiki/"+encodeURIComponent(it.w).replace(/%28/g,"(").replace(/%29/g,")").replace(/%2C/g,","));
+  $("app").innerHTML='<div class="card"><div class="meta"><span>\ud83c\udfb2 Random article</span><span>#'+(E.i+1)+'</span></div><div class="hl">'+esc(it.t)+'</div><div class="src"><a href="'+esc(u)+'" target="_blank" rel="noopener">Read on Wikipedia &rarr;</a></div><div class="row" style="margin-top:16px"><button onclick="rndPrev()"'+(E.i?"":" disabled")+'>&larr; Previous</button><button class="primary" onclick="rndNext()">Next &rarr;</button></div><div class="hint" style="margin:12px 0 0">'+(it.live?"Live from Wikipedia (CC BY-SA). Arrow keys also work.":"Showing built-in articles. Live random pages switch on once the game is hosted on its own site.")+"</div></div>";
+}
+document.addEventListener("keydown",e=>{if(!$("t-rand").classList.contains("on"))return;if(e.key==="ArrowRight")rndNext();else if(e.key==="ArrowLeft")rndPrev()});
+
+/* ---------- Boot ---------- */
+const WIRE=["BULLETIN: A NEW EDITION IS ON THE PRESSES","GET IT FIRST, BUT GET IT RIGHT","VERIFY BEFORE YOU PRINT","TWO SOURCES MINIMUM","CHECK THE DATELINE","THE DESK IS WAITING ON YOUR COPY","-30-"];
+{const t=WIRE.join("  \u2022  ")+"  \u2022  ";$("wm").textContent=t+t}
+setDay(TODAY);
+{const s=load("hd2_streak");if(s)$("streak").textContent="\ud83d\udd25 Daily streak: "+s.n}
+start("date");
+</script>
+</body>
+</html>
